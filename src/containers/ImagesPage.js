@@ -5,6 +5,8 @@ import Radium from 'radium';
 import AppBar from 'material-ui/lib/app-bar';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
+import ImageCard from '../components/ImageCard';
+
 function mapStateToProps() {
   return {
   };
@@ -25,15 +27,13 @@ class ImagesPage extends Component {
         <AppBar
         title="TRVL"
         iconClassNameRight="muidocs-icon-navigation-expand-more"
-        showMenuIconButton= { false } />
-        <Card>
+        showMenuIconButton= { false } style={{ 'position': 'fixed' }} zDepth={ 1 } />
+        <Card style={{ 'paddingTop': '70px' }}>
           <CardText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+            <p>Here's a few photos from my travels...</p>
           </CardText>
         </Card>
+        <ImageCard/>
       </div>
 
     );

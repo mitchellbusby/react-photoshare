@@ -14,9 +14,14 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 
   app.use(require('webpack-hot-middleware')(compiler));
+  console.log("Using settings for dev!");
+
+}
+else {
+  console.log("Using settings for production!");
 }
 
-app.use('/static', express.static('static'));
+app.use('/static', express.static('dist'));
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
