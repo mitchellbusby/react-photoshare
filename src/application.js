@@ -14,7 +14,12 @@ const store = configureStore({}, routes);
 store.subscribe(() => {
   const state = store.getState();
   const currentUser = state.user.get('username');
-  const currentPath = state.router.location.pathname;
+  let currentPath;
+  if (state.router !== null) {
+    currentPath = state.router.location.pathname;
+  } else {
+    currentPath = '';
+  }
 
   if (
     currentUser !== null ||

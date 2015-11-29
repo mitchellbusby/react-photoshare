@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   user,
   counter,
   router: routerStateReducer,
-  images
+  images,
 });
 
 export default rootReducer;
