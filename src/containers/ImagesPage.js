@@ -16,7 +16,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fave: (id) => {
-      console.log('khds');
       dispatch(fave(id));
     },
   };

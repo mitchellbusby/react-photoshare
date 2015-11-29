@@ -1,4 +1,4 @@
-import { FAVE_IMAGE } from '../constants';
+import { FAVE_IMAGE, UNFAVE_IMAGE } from '../constants';
 
 export function fave(id) {
   return {
@@ -8,7 +8,7 @@ export function fave(id) {
 }
 export function unfave(id) {
   return {
-    type: FAVE_IMAGE,
-    payload: {imageId: id},
+    type: UNFAVE_IMAGE,
+    imageId: id,
   };
 }

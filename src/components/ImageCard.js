@@ -6,7 +6,7 @@ import CardMedia from 'material-ui/lib/card/card-media';
 import CardActions from 'material-ui/lib/card/card-actions';
 import IconButton from 'material-ui/lib/icon-button';
 import FontIcon from 'material-ui/lib/font-icon';
-import { fave } from '../actions/images';
+import { fave, unfave } from '../actions/images';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 
@@ -20,6 +20,9 @@ function mapDispatchToProps(dispatch) {
     fave: (id) => {
       dispatch(fave(id));
     },
+    unfave: (id) => {
+      dispatch(unfave(id));
+    },
   };
 }
 
@@ -30,12 +33,21 @@ class ImageCard extends Component {
   static propTypes = {
     image: PropTypes.object.isRequired,
     fave: PropTypes.func.isRequired,
+    unfave: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
   }
+  componentWillMount() {
+    this.setState({
+      faved: false,
+    });
+  }
   onFaveClick() {
-    this.props.fave(this.props.image.id);
+    this.state.faved ? this.props.unfave(this.props.image.id) : this.props.fave(this.props.image.id);
+    this.setState({
+      faved: !this.state.faved,
+    });
   }
   render() {
     const { image } = this.props;
@@ -47,7 +59,7 @@ class ImageCard extends Component {
         <CardHeader title={ image.location } avatar={ <FontIcon className="material-icons"> flight_takeoff </FontIcon> } />
         <CardActions>
           <span>
-            <IconButton onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={`Fave (${image.likes})`} touch>
+            <IconButton onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.state.faved ? `Unfave (${image.likes})` : `Fave (${image.likes})`} touch>
               favorite
             </IconButton>
           </span>

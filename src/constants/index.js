@@ -8,4 +8,4 @@ export const LOGIN_USER_ERROR = 'App/LOGIN_USER_ERROR';
 export const LOGOUT_USER = 'App/LOGOUT_USER';
 
 export const FAVE_IMAGE = 'App/FAVE_IMAGE';
-
+export const UNFAVE_IMAGE = 'App/UNFAVE_IMAGE';
