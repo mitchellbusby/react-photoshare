@@ -9,3 +9,5 @@ export const LOGOUT_USER = 'App/LOGOUT_USER';
 
 export const FAVE_IMAGE = 'App/FAVE_IMAGE';
 export const UNFAVE_IMAGE = 'App/UNFAVE_IMAGE';
+export const FETCH_IMAGES = 'App/FETCH_IMAGES';
+export const RECEIVE_IMAGES = 'App/RECEIVE_IMAGES';

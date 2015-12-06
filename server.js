@@ -1,7 +1,8 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
-
+const bodyParser = require('body-parser');
+const mongo = require('./mongo');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -23,8 +24,34 @@ else {
 
 app.use('/static', express.static('dist'));
 
+app.use(bodyParser.json());
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/api/allimages', function(req, res) {
+  mongo.getAllImages(function(err, data) {
+    if (err) {res.json(err);}
+    else {
+      res.json(data);
+    }
+  });
+});
+
+app.post('/api/like', function(req, res) {
+  var imgId = req.body.id;
+  mongo.likeAnImage(imgId, function(err) {
+    if (err) {return res.status(501).send(err);}
+    res.json({'Response':'Success'});
+  });
+});
+app.post('/api/unlike', function(req, res) {
+  var imgId = req.body.id;
+  mongo.unlikeAnImage(imgId, function(err) {
+    if (err) {return res.status(501).send(err);}
+    res.json({'Response':'Success'});
+  });
 });
 
 app.listen(PORT, 'localhost', function(err) {

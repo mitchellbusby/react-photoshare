@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
-import { FAVE_IMAGE, UNFAVE_IMAGE } from '../constants';
+import { FAVE_IMAGE, UNFAVE_IMAGE, RECEIVE_IMAGES } from '../constants';
+
 
 const imagesReducer = handleActions({
   [FAVE_IMAGE]: (state, action) => (
@@ -15,6 +16,9 @@ const imagesReducer = handleActions({
           Object.assign({}, image, { likes: image.likes - 1 }) :
           image
         )
+  ),
+  [RECEIVE_IMAGES]: (state, action) => (
+    action.images
   ),
 }, [{
   url: 'https://s3-us-west-2.amazonaws.com/busby-traveller/photo.jpg',

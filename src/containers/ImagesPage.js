@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fave } from '../actions/images';
+import { faveAsync, fetchImagesThunk } from '../actions/images';
 import Radium from 'radium';
 import AppBar from 'material-ui/lib/app-bar';
 import Card from 'material-ui/lib/card/card';
@@ -16,7 +16,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fave: (id) => {
-      dispatch(fave(id));
+      dispatch(faveAsync(id));
+    },
+    fetchImages: () => {
+      dispatch(fetchImagesThunk());
     },
   };
 }
@@ -27,6 +30,11 @@ class ImagesPage extends Component {
   static propTypes = {
     images: PropTypes.array.isRequired,
     fave: PropTypes.func.isRequired,
+    fetchImages: PropTypes.func.isRequired,
+  }
+  componentDidMount() {
+    const { fetchImages } = this.props;
+    fetchImages();
   }
   render() {
     const { images } = this.props;
