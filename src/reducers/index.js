@@ -4,6 +4,7 @@ import { reducer as formReducer } from 'redux-form';
 import counter from './counter';
 import user from './user';
 import images from './images';
+import previewImage from './previewImage';
 
 const rootReducer = combineReducers({
   user,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   router: routerStateReducer,
   images,
   form: formReducer,
+  previewImage: previewImage,
 });
 
 export default rootReducer;
