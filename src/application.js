@@ -14,6 +14,7 @@ const store = configureStore({}, routes);
 store.subscribe(() => {
   const state = store.getState();
   const currentUser = state.user.get('username');
+  console.log('store triggered');
   let currentPath;
   if (state.router !== null) {
     currentPath = state.router.location.pathname;
@@ -22,6 +23,12 @@ store.subscribe(() => {
   }
 
   if (
+    currentUser !== null &&
+    currentPath === '/login'
+  ) {
+    console.log('Trigerred login move');
+    history.pushState(null, '/addImage');
+  } else if (
     currentUser !== null ||
     SanitisedRoutes().indexOf(currentPath) > -1
   ) {
