@@ -16,8 +16,12 @@ var getAllImages = function(callback) {
 		})
 	});
 }
-var insertAnImage = function() {
-
+var insertAnImage = function(imageData, callback) {
+	clinet(DB_URI, function(err, db) {
+		if (err) {return callback(err);}
+		db.collection('images').insert(imageData);
+		callback();
+	})
 }
 var deleteAnImage = function() {
 

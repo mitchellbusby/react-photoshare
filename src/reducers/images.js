@@ -6,14 +6,14 @@ const imagesReducer = handleActions({
   [FAVE_IMAGE]: (state, action) => (
       state.map(image =>
           image.id === action.imageId ?
-            Object.assign({}, image, { likes: image.likes + 1 }) :
+            Object.assign({}, image, { likes: image.likes + 1, isLiked: true }) :
             image
       )
   ),
   [UNFAVE_IMAGE]: (state, action) => (
       state.map(image =>
           image.id === action.imageId ?
-          Object.assign({}, image, { likes: image.likes - 1 }) :
+          Object.assign({}, image, { likes: image.likes - 1, isLiked: false }) :
           image
         )
   ),

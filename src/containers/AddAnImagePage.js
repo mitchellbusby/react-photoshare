@@ -9,6 +9,8 @@ import Card from 'material-ui/lib/card/card';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import { selectImageAsync } from '../actions/previewimage';
+import DatePicker from 'material-ui/lib/date-picker/date-picker';
+import { submitImageAsync } from '../actions/addImage';
 
 function mapStateToProps(state) {
   return {
@@ -22,6 +24,9 @@ function mapDispatchToProps(dispatch) {
     selectImage: (imageData) => {
       dispatch(selectImageAsync(imageData));
     },
+    submit: (values) => {
+      dispatch(submitImageAsync(values, dispatch));
+    },
   };
 }
 
@@ -33,6 +38,7 @@ class ImageForm extends Component {
     imageForm: PropTypes.object,
     selectImage: PropTypes.func.isRequired,
     imageData: PropTypes.string,
+    submit: PropTypes.func.isRequired,
   }
   constructor() {
     super();
@@ -41,12 +47,14 @@ class ImageForm extends Component {
   renderImagePreview() {
     if (this.props.imageData) {
       return (
-        <img src={ this.props.imageData } />
+        <div style={{ 'maxWidth': '400px', 'marginTop': '1em' }} >
+          <img src={ this.props.imageData } />
+        </div>
       );
     }
   }
   render() {
-    const { fields, handleSubmit, selectImage } = this.props;
+    const { fields, submit, selectImage, handleSubmit } = this.props;
     return (
       <div>
         <AppBar
@@ -54,12 +62,33 @@ class ImageForm extends Component {
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           showMenuIconButton= { false } style={{ 'position': 'fixed' }} zDepth={ 1 } />
         <Card style={{ 'paddingTop': '70px', 'width': '80%', 'margin': '0 auto' }}>
-          <form onSubmit={ handleSubmit } style={{'marginLeft': '1em'}}>
+          <form onSubmit={ handleSubmit(submit) } style={{'marginLeft': '1em'}}>
             <div>
               <TextField
                 hintText="San Francisco, CA"
                 floatingLabelText="Location"
-                {...location} />
+                {...fields.location} />
+            </div>
+            <div>
+              <TextField
+                hintText=""
+                floatingLabelText="Longitude"
+                {...fields.longitude} />
+            </div>
+            <div>
+              <TextField
+                hintText=""
+                floatingLabelText="Latitude"
+                {...fields.latitude} />
+            </div>
+            <div style={{ 'marginTop': '1em' }}>
+              <DatePicker hintText="Date"
+              onChange={
+                ( e, date ) => {
+                  fields.date.onChange(date);
+                }
+              }
+              />
             </div>
             <div style={{'marginTop': '1em'}}>
               <label>Image file</label>
@@ -76,7 +105,7 @@ class ImageForm extends Component {
               }/>
             </div>
             {this.renderImagePreview()}
-            <RaisedButton onClick={ handleSubmit } label={'Submit'}
+            <RaisedButton onClick={ handleSubmit(submit) } label={'Submit'}
             style={{'margin': '1em', 'marginLeft': '0'}}
             primary/>
           </form>
@@ -88,7 +117,7 @@ class ImageForm extends Component {
 
 ImageForm = reduxForm({
   form: ADD_IMAGE_FORM,
-  fields: ['location', 'image'],
+  fields: ['location', 'image', 'longitude', 'latitude', 'date'],
 })(ImageForm);
 
 export default ImageForm;
