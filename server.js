@@ -41,14 +41,16 @@ app.get('/api/allimages', function(req, res) {
 
 app.post('/api/like', function(req, res) {
   var imgId = req.body.id;
-  mongo.likeAnImage(imgId, function(err) {
+  var guestToken = req.body.guestToken;
+  mongo.likeAnImage(imgId, guestToken, function(err) {
     if (err) {return res.status(501).send(err);}
     res.json({'Response':'Success'});
   });
 });
 app.post('/api/unlike', function(req, res) {
   var imgId = req.body.id;
-  mongo.unlikeAnImage(imgId, function(err) {
+  var guestToken = req.body.guestToken;
+  mongo.unlikeAnImage(imgId, guestToken, function(err) {
     if (err) {return res.status(501).send(err);}
     res.json({'Response':'Success'});
   });

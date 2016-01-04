@@ -10,18 +10,19 @@ import { faveAsync, unfaveAsync } from '../actions/images';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 
-function mapStateToProps() {
+function mapStateToProps(state) {
   return {
+    guestToken: state.guest.get('token'),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fave: (id) => {
-      dispatch(faveAsync(id));
+    fave: (id, token) => {
+      dispatch(faveAsync(id, token));
     },
-    unfave: (id) => {
-      dispatch(unfaveAsync(id));
+    unfave: (id, token) => {
+      dispatch(unfaveAsync(id, token));
     },
   };
 }
@@ -34,6 +35,7 @@ class ImageCard extends Component {
     image: PropTypes.object.isRequired,
     fave: PropTypes.func.isRequired,
     unfave: PropTypes.func.isRequired,
+    guestToken: PropTypes.string.isRequired,
   }
   constructor(props) {
     super(props);
@@ -41,10 +43,12 @@ class ImageCard extends Component {
   componentWillMount() {
   }
   onFaveClick() {
-    this.props.image.isLiked ? this.props.unfave(this.props.image.id) : this.props.fave(this.props.image.id);
+    this.props.image.isLiked ? this.props.unfave(this.props.image.id, this.props.guestToken) : this.props.fave(this.props.image.id, this.props.guestToken);
   }
   render() {
     const { image } = this.props;
+    console.log(image);
+    const likes =  image.likelog.length;
     let faveColor;
     faveColor = !(this.props.image.isLiked) ? 'black' : 'red';
     return (
@@ -55,7 +59,7 @@ class ImageCard extends Component {
         <CardHeader title={ image.location } avatar={ <FontIcon className="material-icons"> flight_takeoff </FontIcon> } />
         <CardActions>
           <span>
-            <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.props.image.isLiked ? `Unfave (${image.likes})` : `Fave (${image.likes})`} touch>
+            <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.props.image.isLiked ? `Unfave (${likes})` : `Fave (${likes})`} touch>
               favorite
             </IconButton>
           </span>

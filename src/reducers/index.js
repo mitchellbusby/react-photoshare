@@ -5,6 +5,7 @@ import counter from './counter';
 import user from './user';
 import images from './images';
 import previewImage from './previewImage';
+import guest from './guest';
 
 const rootReducer = combineReducers({
   user,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   images,
   form: formReducer,
   previewImage: previewImage,
+  guest: guest,
 });
 
 export default rootReducer;

@@ -17,7 +17,7 @@ var getAllImages = function(callback) {
 	});
 }
 var insertAnImage = function(imageData, callback) {
-	clinet(DB_URI, function(err, db) {
+	client(DB_URI, function(err, db) {
 		if (err) {return callback(err);}
 		db.collection('images').insert(imageData);
 		callback();
@@ -26,23 +26,29 @@ var insertAnImage = function(imageData, callback) {
 var deleteAnImage = function() {
 
 }
-var likeAnImage = function(id, callback) {
+var likeAnImage = function(id, guestToken, callback) {
 	client(DB_URI, function(err, db) {
 		if (err) {return callback(err);}
 		db.collection('images').update({'id':id}, {
 			$inc: {
 				likes: 1
+			},
+			$push: {
+				likelog: {'token': guestToken, 'time': Date() }
 			}
 		});
 		callback();
 	});
 }
-var unlikeAnImage = function(id, callback) {
+var unlikeAnImage = function(id, guestToken, callback) {
 	client(DB_URI, function(err, db) {
 		if (err) {return callback(err);}
 		db.collection('images').update({'id':id}, {
 			$inc: {
 				likes: -1
+			},
+			$pull: {
+				likelog: {'token': guestToken}
 			}
 		});
 		callback();

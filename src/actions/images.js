@@ -2,16 +2,18 @@ import { FAVE_IMAGE, UNFAVE_IMAGE, FETCH_IMAGES, RECEIVE_IMAGES } from '../const
 import fetch from 'isomorphic-fetch';
 
 
-export function fave(id) {
+export function fave(id, guestToken) {
   return {
     type: FAVE_IMAGE,
     imageId: id,
+    guestToken: guestToken,
   };
 }
-export function unfave(id) {
+export function unfave(id, guestToken) {
   return {
     type: UNFAVE_IMAGE,
     imageId: id,
+    guestToken: guestToken,
   };
 }
 export function fetchImages() {
@@ -38,7 +40,7 @@ export function fetchImagesThunk() {
   };
 }
 
-export function faveAsync(id) {
+export function faveAsync(id, guestToken) {
   return function onDispatch(dispatch) {
     return fetch(`/api/like`, {
       method: 'post',
@@ -48,15 +50,16 @@ export function faveAsync(id) {
       },
       body: JSON.stringify({
         id: id,
+        guestToken: guestToken,
       }),
     })
     .then(()=>
-      dispatch(fave(id))
+      dispatch(fave(id, guestToken))
     );
   };
 }
 
-export function unfaveAsync(id) {
+export function unfaveAsync(id, guestToken) {
   return function onDispatch(dispatch) {
     return fetch(`/api/unlike`, {
       method: 'post',
@@ -66,10 +69,11 @@ export function unfaveAsync(id) {
       },
       body: JSON.stringify({
         id: id,
+        guestToken: guestToken,
       }),
     })
     .then(()=>
-      dispatch(unfave(id))
+      dispatch(unfave(id, guestToken))
     );
   };
 }
