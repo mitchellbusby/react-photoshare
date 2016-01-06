@@ -9,6 +9,19 @@ export function submitImage() {
 
 export function submitImageAsync(values, dispatch) {
   console.log(values);
+  /* return new Promise(function deferrable(resolve, reject) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(imageUrl);
+      fileReader.onload = (ev) => {
+        resolve(ev.target.result);
+      };
+      fileReader.onerror = () => {
+        reject();
+      };
+    })
+    .then(imageData=>
+      dispatch(previewImageReceived(imageData))
+    );*/
   return fetch(`/api/submitImage`, {
     method: 'post',
     headers: {
