@@ -99,7 +99,7 @@ class ImageForm extends Component {
                   e.preventDefault();
                   const files = [...e.target.files];
                   this.setState({currentImage: files[0]});
-                  fields.image.onChange(files);
+                  fields.image.onChange(files[0]);
                   selectImage(files[0]);
                 }
               }/>

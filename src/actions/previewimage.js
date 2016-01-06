@@ -1,4 +1,5 @@
 import { PREVIEW_IMAGE_RECEIVED } from '../constants';
+import { FileHandler } from '../utils/utilities';
 
 export function previewImageReceived(imageData) {
   return {
@@ -10,16 +11,7 @@ export function previewImageReceived(imageData) {
 
 export function selectImageAsync(imageUrl) {
   return function onDispatch(dispatch) {
-    return new Promise(function deferrable(resolve, reject) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(imageUrl);
-      fileReader.onload = (ev) => {
-        resolve(ev.target.result);
-      };
-      fileReader.onerror = () => {
-        reject();
-      };
-    })
+    return FileHandler(imageUrl)
     .then(imageData=>
       dispatch(previewImageReceived(imageData))
     );

@@ -1,37 +1,41 @@
 import fetch from 'isomorphic-fetch';
-import { SUBMIT_IMAGE_PENDING } from '../constants';
+import { SUBMIT_IMAGE_PENDING, SUBMIT_IMAGE_FINISH } from '../constants';
+import { FileHandler } from '../utils/utilities';
 
 export function submitImage() {
   return {
     type: SUBMIT_IMAGE_PENDING,
   };
 }
+export function submitImageFinish(wasSuccess) {
+  return {
+    type: SUBMIT_IMAGE_FINISH,
+    status: wasSuccess,
+  };
+}
 
 export function submitImageAsync(values, dispatch) {
   console.log(values);
-  /* return new Promise(function deferrable(resolve, reject) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(imageUrl);
-      fileReader.onload = (ev) => {
-        resolve(ev.target.result);
-      };
-      fileReader.onerror = () => {
-        reject();
-      };
-    })
-    .then(imageData=>
-      dispatch(previewImageReceived(imageData))
-    );*/
-  return fetch(`/api/submitImage`, {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(values),
+  // function A
+  return FileHandler(values.image)
+  .then(imageData => {
+    const valuesWithImage = Object.assign({}, values, {'imageData': imageData});
+    return fetch(`/api/submitImage`, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(valuesWithImage),
+    });
   })
+  // Function B
   .then(function(json) {
-    dispatch('');
+    dispatch(submitImageFinish(true));
     return json;
+  })
+  .catch(()=>{
+    dispatch(submitImageFinish(false));
+    return '';
   });
 }

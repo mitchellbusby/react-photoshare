@@ -28,3 +28,21 @@ export function isPromise(value) {
     return value.promise && typeof value.promise.then === 'function';
   }
 }
+/**
+  * Returns a promise object with either the object data (as base 64) or failed
+  * @param {File/Blob} the file you want to read from
+  * @return {Promise}
+  */
+
+export function FileHandler(fileObject) {
+  return new Promise(function deferrable(resolve, reject) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(fileObject);
+    fileReader.onload = (ev) => {
+      resolve(ev.target.result);
+    };
+    fileReader.onerror = () => {
+      reject();
+    };
+  });
+}
