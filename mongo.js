@@ -58,4 +58,5 @@ var exports = module.exports = {};
 
 exports.getAllImages = getAllImages;
 exports.likeAnImage = likeAnImage;
+exports.insertAnImage = insertAnImage;
 exports.unlikeAnImage = unlikeAnImage;

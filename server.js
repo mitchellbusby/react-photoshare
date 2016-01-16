@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongo = require('./mongo');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+const s3 = require('./export/s3_exporter');
 const config = require('./webpack.config');
 const compiler = webpack(config);
 
@@ -55,7 +55,33 @@ app.post('/api/unlike', function(req, res) {
     res.json({'Response':'Success'});
   });
 });
-//app.post('/upload')
+app.post('/api/submitImage', function(req, res) {
+  // export to s3
+  var client = s3.createClient();
+  var bucketName = s3.config.awsBucket;
+  var photoName = req.body.name+'.jpg';
+  var photoUri = 'https://'+s3.config.awsRegion+'.amazonaws.com/'+bucketName+'/'+photoName;
+  s3.uploadPhotoByStream(req.body.imageData, client, bucketName, photoName, function(err, data) {
+    // then export to mongo durr
+    if (err) {return res.status(501).send(err);}
+    mongo.insertAnImage({
+      'url': photoUri,
+      location: req.body.location,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      likelog: {},
+      date: req.body.date,
+    }, function(err, data) {
+      if (err) {return res.status(501).send(err);}
+      res.json({'Response':'Success'});
+    });
+});
+
+
+  // then respond
+
+
+});
 app.listen(PORT, 'localhost', function(err) {
   if (err) {
     console.log(err);

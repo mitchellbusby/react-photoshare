@@ -66,6 +66,12 @@ class ImageForm extends Component {
           <form onSubmit={ handleSubmit(submit) } style={{'marginLeft': '1em'}}>
             <div>
               <TextField
+                hintText="A unique name"
+                floatingLabelText="Name"
+                {...fields.name} />
+            </div>
+            <div>
+              <TextField
                 hintText="San Francisco, CA"
                 floatingLabelText="Location"
                 {...fields.location} />
@@ -119,7 +125,7 @@ class ImageForm extends Component {
 
 ImageForm = reduxForm({
   form: ADD_IMAGE_FORM,
-  fields: ['location', 'image', 'longitude', 'latitude', 'date'],
+  fields: ['location', 'image', 'longitude', 'latitude', 'date', 'name'],
 })(ImageForm);
 
 export default ImageForm;
