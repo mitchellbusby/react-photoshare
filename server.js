@@ -69,7 +69,7 @@ app.post('/api/submitImage', function(req, res) {
       location: req.body.location,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
-      likelog: {},
+      likelog: [],
       date: req.body.date,
     }, function(err, data) {
       if (err) {return res.status(501).send(err);}
