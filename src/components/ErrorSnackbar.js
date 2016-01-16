@@ -22,15 +22,18 @@ class ErrorSnackbar extends Component {
   static propTypes = {
     errorMessage: PropTypes.string,
     resetError: PropTypes.func.isRequired,
+    action: PropTypes.string,
+    onAction: PropTypes.func,
   }
   render() {
-    const { errorMessage } = this.props;
-    console.log(errorMessage);
+    const { errorMessage, action, onAction } = this.props;
     return (
       <Snackbar
-      onRequestClose={ this.requestToClose }
-      open={ () => /* errorMessage !== null */ true }
-      message={ errorMessage } />
+      onRequestClose={ () => { this.requestToClose(); } }
+      open={ errorMessage !== null }
+      message={ errorMessage }
+      action = { action }
+      onActionTouchTap = { () => { onAction !== undefined ? onAction() : ''; } } />
     );
   }
   requestToClose() {
