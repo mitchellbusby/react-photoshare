@@ -6,6 +6,7 @@ import user from './user';
 import images from './images';
 import previewImage from './previewImage';
 import guest from './guest';
+import errorReducer from './errormessage';
 
 const rootReducer = combineReducers({
   user,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   previewImage: previewImage,
   guest: guest,
+  error: errorReducer,
 });
 
 export default rootReducer;

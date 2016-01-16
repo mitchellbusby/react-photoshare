@@ -7,10 +7,11 @@ export function submitImage() {
     type: SUBMIT_IMAGE_PENDING,
   };
 }
-export function submitImageFinish(wasSuccess) {
+export function submitImageFinish(wasSuccess, errorMessage) {
   return {
     type: SUBMIT_IMAGE_FINISH,
     status: wasSuccess,
+    error: errorMessage,
   };
 }
 
@@ -35,7 +36,7 @@ export function submitImageAsync(values, dispatch) {
     return json;
   })
   .catch(()=>{
-    dispatch(submitImageFinish(false));
+    dispatch(submitImageFinish(false, 'Error encountered when submitting image.'));
     return '';
   });
 }

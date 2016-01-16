@@ -11,6 +11,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import { selectImageAsync } from '../actions/previewimage';
 import DatePicker from 'material-ui/lib/date-picker/date-picker';
 import { submitImageAsync } from '../actions/addImage';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 
 function mapStateToProps(state) {
   return {
@@ -110,6 +111,7 @@ class ImageForm extends Component {
             primary/>
           </form>
         </Card>
+        <ErrorSnackbar />
       </div>
     );
   }
