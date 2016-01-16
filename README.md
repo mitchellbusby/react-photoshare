@@ -39,6 +39,19 @@ $ npm run cover
 $ npm run start
 ```
 
+### Configuration Files
+
+####S3 
+Under export/config.js, format it like:
+```// config.js
+var exports = module.exports = {};
+
+exports.awsAccessKey = "";
+exports.awsSecret = "";
+exports.awsBucket = "";
+exports.photosToUploadFolder = "";
+```
+
 ## License
 
 Copyright (c) 2015 rangle.io
