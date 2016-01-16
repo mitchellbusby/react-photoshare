@@ -21,16 +21,19 @@ function uploadPhoto(photoUri, client, bucketName, key, callback) {
 	});
 }
 
-function uploadPhotoByStream(photoUri, client, bucketName, key, callback) {
+function uploadPhotoByStream(binaryImage, client, bucketName, key, callback) {
 	// Key is the uri where the picture will go
+	buf = new Buffer(binaryImage.replace(/^data:image\/\w+;base64,/, ""),'base64')
 	console.log("Uploading file!");
-	fs.readFile(photoUri, function(err, data){
-		if (err) {callback(err);}
-		client.putObject({
-			Bucket: bucketName,
-			Key: key,
-			Body: data
-		},callback);
+
+	client.putObject({
+		Bucket: bucketName,
+		Key: key,
+		Body: buf,
+		ContentEncoding: 'base64',
+		ContentType: 'image/jpeg'
+	}, function(err, data) {
+		callback(err);
 	});
 }
 
