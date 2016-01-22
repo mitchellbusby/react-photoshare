@@ -43,14 +43,14 @@ class ImageCard extends Component {
   componentWillMount() {
   }
   onFaveClick() {
-    this.props.image.isLiked ? this.props.unfave(this.props.image.id, this.props.guestToken) : this.props.fave(this.props.image.id, this.props.guestToken);
+    this.isFaved() ? this.props.unfave(this.props.image.id, this.props.guestToken) : this.props.fave(this.props.image.id, this.props.guestToken);
   }
+
   render() {
     const { image } = this.props;
-    console.log(image);
     const likes =  image.likelog.length;
     let faveColor;
-    faveColor = !(this.props.image.isLiked) ? 'black' : 'red';
+    faveColor = !this.isFaved() ? 'black' : 'red';
     return (
       <Card style={ styles }>
         <CardMedia>
@@ -59,7 +59,7 @@ class ImageCard extends Component {
         <CardHeader title={ image.location } avatar={ <FontIcon className="material-icons"> flight_takeoff </FontIcon> } />
         <CardActions>
           <span>
-            <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.props.image.isLiked ? `Unfave (${likes})` : `Fave (${likes})`} touch>
+            <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.isFaved() ? `Unfave (${likes})` : `Fave (${likes})`} touch>
               favorite
             </IconButton>
           </span>
@@ -71,6 +71,14 @@ class ImageCard extends Component {
         </CardActions>
       </Card>
     );
+  }
+  isFaved() {
+    const likelog = this.props.image.likelog !== null ? this.props.image.likelog : [];
+    const guestToken = this.props.guestToken;
+    if (likelog.filter(log => log.token === guestToken).length > 0) {
+      return true;
+    }
+    return false;
   }
 }
 

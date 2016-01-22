@@ -7,9 +7,7 @@ const imagesReducer = handleActions({
       state.map(image =>
           image.id === action.imageId ?
             Object.assign({}, image, {
-              likes: image.likes + 1,
-              isLiked: true,
-              likelog: image.likelog.concat([{'guestToken': action.guestToken}]),
+              likelog: image.likelog.concat([{token: action.token, time: action.time}]),
             }) :
             image
       )
@@ -18,11 +16,10 @@ const imagesReducer = handleActions({
       state.map(image =>
           image.id === action.imageId ?
           Object.assign({}, image, {
-            likes: image.likes - 1,
             likelog: image.likelog.filter(logitem =>
-              logitem.guestToken !== action.guestToken
+              logitem.token !== action.token
             ),
-            isLiked: false }) :
+          }) :
           image
         )
   ),

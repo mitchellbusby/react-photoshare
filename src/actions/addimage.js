@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch';
 import { SUBMIT_IMAGE_PENDING, SUBMIT_IMAGE_FINISH } from '../constants';
 import { FileHandler } from '../utils/utilities';
+const Guid = require('guid');
+
 
 export function submitImage() {
   return {
@@ -16,11 +18,10 @@ export function submitImageFinish(wasSuccess, errorMessage) {
 }
 
 export function submitImageAsync(values, dispatch) {
-  console.log(values);
   // function A
   return FileHandler(values.image)
   .then(imageData => {
-    const valuesWithImage = Object.assign({}, values, {'imageData': imageData});
+    const valuesWithImage = Object.assign({}, values, {'imageData': imageData, id: Guid.raw() });
     return fetch(`/api/submitImage`, {
       method: 'post',
       headers: {

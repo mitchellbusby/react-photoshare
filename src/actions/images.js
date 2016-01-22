@@ -6,14 +6,14 @@ export function fave(id, guestToken) {
   return {
     type: FAVE_IMAGE,
     imageId: id,
-    guestToken: guestToken,
+    token: guestToken,
   };
 }
 export function unfave(id, guestToken) {
   return {
     type: UNFAVE_IMAGE,
     imageId: id,
-    guestToken: guestToken,
+    token: guestToken,
   };
 }
 export function fetchImages() {
