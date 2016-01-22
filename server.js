@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongo = require('./mongo');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADDRESS = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 const s3 = require('./export/s3_exporter');
 const config = require('./webpack.config');
 const compiler = webpack(config);
@@ -82,11 +83,11 @@ app.post('/api/submitImage', function(req, res) {
 
 
 });
-app.listen(PORT, 'localhost', function(err) {
+app.listen(PORT, ADDRESS, function(err) {
   if (err) {
     console.log(err);
     return;
   }
 
-  console.log(`Listening at http://localhost:${ PORT }`);
+  console.log(`Listening at http://${ ADDRESS }:${ PORT }`);
 });
