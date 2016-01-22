@@ -35,7 +35,8 @@ function uploadPhotoByStream(binaryImage, client, bucketName, key, callback) {
 		Key: key,
 		Body: buf,
 		ContentEncoding: 'base64',
-		ContentType: 'image/jpeg'
+		ContentType: 'image/jpeg',
+		ACL: "public-read",
 	}, function(err, data) {
 		console.log("Finished uploading file!");
 		if (err) {console.log(err)};

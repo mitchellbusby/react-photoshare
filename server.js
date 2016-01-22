@@ -24,7 +24,7 @@ else {
 
 app.use('/static', express.static('dist'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
