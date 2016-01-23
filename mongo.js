@@ -58,7 +58,7 @@ var unlikeAnImage = function(id, guestToken, callback) {
 var validateUser = function(username, hashed_pwd, guestToken, callback) {
 	client(DB_URI, function(err, db) {
 		if (err) {return callback(err);}
-		var userMatches = db.collection('users').find({username: username, pwd: hashed_pwd});
+		var userMatches = db.collection('users').find({username: username, password: hashed_pwd});
 		if (userMatches.length > 0) {
 			db.users.update(
 				{_id: userMatches[0]._id},
