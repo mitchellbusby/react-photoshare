@@ -1,0 +1,12 @@
+.image-card {
+	margin: 20px auto;
+	@include breakpoint(xs) {
+		width: 100%;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	@include breakpoint(sm) {
+		width: 50%;
+		max-width: 700px;
+	}
+}

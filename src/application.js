@@ -43,18 +43,26 @@ store.subscribe(() => {
 
 @ThemeDecorator(materialTheme)
 export default class Application extends React.Component {
-  render() {
-    return (
-      <div>
-        <Provider store={ store }>
-          <ReduxRouter />
-        </Provider>
+  renderDebugPanel() {
+    if (process.env.NODE_ENV !== 'production') {
+      return (
         <DebugPanel top right bottom>
           <DevTools
           store={ store }
           monitor={ LogMonitor }
           visibleOnLoad />
         </DebugPanel>
+      );
+    }
+    return false;
+  }
+  render() {
+    return (
+      <div>
+        <Provider store={ store }>
+          <ReduxRouter />
+        </Provider>
+        { this.renderDebugPanel() }
       </div>
       );
   }

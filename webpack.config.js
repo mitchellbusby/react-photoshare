@@ -28,7 +28,7 @@ module.exports = {
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }
       }),
       new webpack.optimize.UglifyJsPlugin({
@@ -58,6 +58,11 @@ module.exports = {
     }, {
       test: /\.(woff|woff2|ttf|eot)$/,
       loader: 'url-loader?prefix=font/&limit=5000'
+    },
+    {
+      test: /\.scss$/,
+      loader: 'style!css!sass',
+      exclude: /node_modules/
     }]
   }
 };

@@ -31,6 +31,19 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+api.post('/api/login', function(req, res) {
+  // hash the password at some stage here
+  var pwd = req.password;
+  mongo.validateUser(req.username, pwd, req.token, function(isValidated) {
+    if (isValidated) {
+      return res.json({'Response': 'Success'});
+    }
+    else {
+      return res.status(401).json({'Response': 'Invalid credentials'});
+    }
+  });
+});
+
 app.get('/api/allimages', function(req, res) {
   mongo.getAllImages(function(err, data) {
     if (err) {res.json(err);}
@@ -57,26 +70,32 @@ app.post('/api/unlike', function(req, res) {
   });
 });
 app.post('/api/submitImage', function(req, res) {
-  // export to s3
-  var client = s3.createClient();
-  var bucketName = s3.config.awsBucket;
-  var photoName = req.body.name+'.jpg';
-  var photoUri = 'https://'+s3.config.awsRegion+'.amazonaws.com/'+bucketName+'/'+photoName;
-  s3.uploadPhotoByStream(req.body.imageData, client, bucketName, photoName, function(err, data) {
-    // then export to mongo durr
-    if (err) {return res.status(501).send(err);}
-    mongo.insertAnImage({
-      'url': photoUri,
-      location: req.body.location,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
-      likelog: [],
-      date: req.body.date,
-    }, function(err, data) {
+  // validate client
+  mongo.validateUserWithToken(req.token, function(isValidated) {
+    if (!isValidated) {
+      return res.status(401).send("Token not validated.");
+    }
+    // export to s3
+    var client = s3.createClient();
+    var bucketName = s3.config.awsBucket;
+    var photoName = req.body.name+'.jpg';
+    var photoUri = 'https://'+s3.config.awsRegion+'.amazonaws.com/'+bucketName+'/'+photoName;
+    s3.uploadPhotoByStream(req.body.imageData, client, bucketName, photoName, function(err, data) {
+      // then export to mongo durr
       if (err) {return res.status(501).send(err);}
-      res.json({'Response':'Success'});
+      mongo.insertAnImage({
+        'url': photoUri,
+        location: req.body.location,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        likelog: [],
+        date: req.body.date,
+      }, function(err, data) {
+        if (err) {return res.status(501).send(err);}
+        res.json({'Response':'Success'});
+      });
     });
-});
+  });
 
 
   // then respond

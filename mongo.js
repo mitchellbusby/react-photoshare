@@ -54,9 +54,42 @@ var unlikeAnImage = function(id, guestToken, callback) {
 		callback();
 	});
 }
+
+var validateUser = function(username, hashed_pwd, guestToken, callback) {
+	client(DB_URI, function(err, db) {
+		if (err) {return callback(err);}
+		var userMatches = db.collection('users').find({username: username, pwd: hashed_pwd});
+		if (userMatches.length > 0) {
+			db.users.update(
+				{_id: userMatches[0]._id},
+				{$push: {tokens: guestToken}}
+			);
+			callback(true);
+		}
+		else {
+			callback(false);
+		}
+	});
+}
+
+var validateUserWithToken = function(guestToken, callback) {
+	client(DB_URI, function(err, db) {
+		if (err) {return callback(err;)}
+		var userMatches = db.collection('users').find({tokens: {$elemMatch:{$eq:guestToken}}});
+		if (userMatches.length > 0) {
+			callback(true);
+		}
+		else {
+			callback(false);
+		}
+	});
+}
+
 var exports = module.exports = {};
 
 exports.getAllImages = getAllImages;
 exports.likeAnImage = likeAnImage;
 exports.insertAnImage = insertAnImage;
 exports.unlikeAnImage = unlikeAnImage;
+exports.validateUser = validateUser;
+exports.validateUserWithToken = validateUserWithToken;

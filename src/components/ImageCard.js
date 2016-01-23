@@ -52,24 +52,26 @@ class ImageCard extends Component {
     let faveColor;
     faveColor = !this.isFaved() ? 'black' : 'red';
     return (
-      <Card style={ styles }>
-        <CardMedia>
-          <img src={ image.url } />
-        </CardMedia>
-        <CardHeader title={ image.location } avatar={ <FontIcon className="material-icons"> flight_takeoff </FontIcon> } />
-        <CardActions>
-          <span>
-            <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.isFaved() ? `Unfave (${likes})` : `Fave (${likes})`} touch>
-              favorite
-            </IconButton>
-          </span>
-          <a href={ image.url } target="_blank">
-            <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Link" touch>
-              launch
-            </IconButton>
-          </a>
-        </CardActions>
-      </Card>
+      <div className={ 'image-card' }>
+        <Card style={ styles }>
+          <CardMedia>
+            <img src={ image.url } />
+          </CardMedia>
+          <CardHeader title={ image.location } avatar={ <FontIcon className="material-icons"> flight_takeoff </FontIcon> } />
+          <CardActions>
+            <span>
+              <IconButton iconStyle={{ 'color': faveColor }}  onClick={() => {this.onFaveClick();}}  iconClassName="material-icons" tooltipPosition="top-center" tooltip={this.isFaved() ? `Unfave (${likes})` : `Fave (${likes})`} touch>
+                favorite
+              </IconButton>
+            </span>
+            <a href={ image.url } target="_blank">
+              <IconButton iconClassName="material-icons" tooltipPosition="top-center" tooltip="Link" touch>
+                launch
+              </IconButton>
+            </a>
+          </CardActions>
+        </Card>
+      </div>
     );
   }
   isFaved() {
@@ -84,10 +86,6 @@ class ImageCard extends Component {
 
 
 const styles = {
-  'width': '50%',
-  'margin': '0 auto',
-  'marginTop': '20px',
-  'marginBottom': '20px',
 };
 
 export default ImageCard;
