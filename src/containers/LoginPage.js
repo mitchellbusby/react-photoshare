@@ -9,12 +9,13 @@ function mapStateToProps(state) {
   return {
     user: state.user,
     router: state.router,
+    token: state.guest.get('token'),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    attemptLogin: (username, password) => dispatch(loginUser(username, password)),
+    attemptLogin: (username, password, token) => dispatch(loginUser(username, password, token)),
   };
 }
 
@@ -24,6 +25,7 @@ class LoginPage extends Component {
   static propTypes = {
     attemptLogin: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
+    token: PropTypes.string.isRequired,
   };
 
   render() {
@@ -42,7 +44,7 @@ class LoginPage extends Component {
 
     const submitForm = (e) => {
       e.preventDefault();
-      attemptLogin(this.refs.username.value, this.refs.password.value);
+      attemptLogin(this.refs.username.value, this.refs.password.value, this.props.token);
     };
 
     return (

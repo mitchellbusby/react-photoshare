@@ -12,11 +12,13 @@ import { selectImageAsync } from '../actions/previewimage';
 import DatePicker from 'material-ui/lib/date-picker/date-picker';
 import { submitImageAsync } from '../actions/addImage';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import { saveToken } from '../actions/guest';
 
 function mapStateToProps(state) {
   return {
     imageForm: state.form[ADD_IMAGE_FORM],
     imageData: state.previewImage.imageData,
+    token: state.guest.get('token'),
   };
 }
 
@@ -27,6 +29,9 @@ function mapDispatchToProps(dispatch) {
     },
     submit: (values) => {
       dispatch(submitImageAsync(values, dispatch));
+    },
+    saveAuthenticatedToken: (tokenToSave) => {
+      dispatch(saveToken(tokenToSave));
     },
   };
 }
@@ -40,10 +45,16 @@ class ImageForm extends Component {
     selectImage: PropTypes.func.isRequired,
     imageData: PropTypes.string,
     submit: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    saveAuthenticatedToken: PropTypes.func.isRequired,
   }
   constructor() {
     super();
     this.state = {};
+  }
+  componentDidMount() {
+    const { saveAuthenticatedToken, token } = this.props;
+    saveAuthenticatedToken(token);
   }
   renderImagePreview() {
     if (this.props.imageData) {
@@ -125,7 +136,7 @@ class ImageForm extends Component {
 
 ImageForm = reduxForm({
   form: ADD_IMAGE_FORM,
-  fields: ['location', 'image', 'longitude', 'latitude', 'date', 'name'],
+  fields: ['location', 'image', 'longitude', 'latitude', 'date', 'name', 'token'],
 })(ImageForm);
 
 export default ImageForm;

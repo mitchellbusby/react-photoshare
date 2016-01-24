@@ -9,6 +9,7 @@ const ADDRESS = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 const s3 = require('./export/s3_exporter');
 const config = require('./webpack.config');
 const compiler = webpack(config);
+const guid = require('guid');
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-dev-middleware')(compiler, {
@@ -31,10 +32,10 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-api.post('/api/login', function(req, res) {
+app.post('/api/login', function(req, res) {
   // hash the password at some stage here
-  var pwd = req.password;
-  mongo.validateUser(req.username, pwd, req.token, function(isValidated) {
+  var pwd = req.body.password;
+  mongo.validateUser(req.body.username, pwd, req.body.token, function(isValidated) {
     if (isValidated) {
       return res.json({'Response': 'Success'});
     }
@@ -71,7 +72,7 @@ app.post('/api/unlike', function(req, res) {
 });
 app.post('/api/submitImage', function(req, res) {
   // validate client
-  mongo.validateUserWithToken(req.token, function(isValidated) {
+  mongo.validateUserWithToken(req.body.token, function(isValidated) {
     if (!isValidated) {
       return res.status(401).send("Token not validated.");
     }
@@ -89,6 +90,7 @@ app.post('/api/submitImage', function(req, res) {
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         likelog: [],
+        id: guid.raw(),
         date: req.body.date,
       }, function(err, data) {
         if (err) {return res.status(501).send(err);}

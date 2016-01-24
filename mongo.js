@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var DB_URI = "mongodb://localhost:27017/local"
 
 var client = function(DB_URI, callback) {
-  MongoClient.connect(DB_URI, callback);
+	MongoClient.connect(DB_URI, callback);
 }
 
 var getAllImages = function(callback) {
@@ -58,30 +58,35 @@ var unlikeAnImage = function(id, guestToken, callback) {
 var validateUser = function(username, hashed_pwd, guestToken, callback) {
 	client(DB_URI, function(err, db) {
 		if (err) {return callback(err);}
-		var userMatches = db.collection('users').find({username: username, password: hashed_pwd});
-		if (userMatches.length > 0) {
-			db.users.update(
-				{_id: userMatches[0]._id},
-				{$push: {tokens: guestToken}}
-			);
-			callback(true);
-		}
-		else {
-			callback(false);
-		}
+		var cur = db.collection('users').find({username: username, password: hashed_pwd});
+		cur.toArray(function(err, userMatches) {
+			console.log(userMatches);
+			if (userMatches.length > 0) {
+				db.collection('users').update(
+					{_id: userMatches[0]._id},
+					{$push: {tokens: guestToken}}
+					);
+				callback(true);
+			}
+			else {
+				callback(false);
+			}
+		});
 	});
 }
 
 var validateUserWithToken = function(guestToken, callback) {
 	client(DB_URI, function(err, db) {
-		if (err) {return callback(err;)}
-		var userMatches = db.collection('users').find({tokens: {$elemMatch:{$eq:guestToken}}});
-		if (userMatches.length > 0) {
-			callback(true);
-		}
-		else {
-			callback(false);
-		}
+		if (err) {return callback(err);}
+		var cur = db.collection('users').find({tokens: {$elemMatch:{$eq:guestToken}}});
+		cur.toArray(function(err, userMatches){
+			if (userMatches.length > 0) {
+				callback(true);
+			}
+			else {
+				callback(false);
+			}
+		});
 	});
 }
 

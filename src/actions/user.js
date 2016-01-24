@@ -7,7 +7,7 @@ import {
   LOGOUT_USER,
 } from '../constants';
 
-export function loginUser(username, password) {
+export function loginUser(username, password, token) {
   return {
     types: [
       LOGIN_USER_PENDING,
@@ -15,7 +15,7 @@ export function loginUser(username, password) {
       LOGIN_USER_ERROR,
     ],
     payload: {
-      promise: login(username, password),
+      promise: login(username, password, token),
     },
   };
 }
