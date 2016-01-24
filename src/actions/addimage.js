@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { SUBMIT_IMAGE_PENDING, SUBMIT_IMAGE_FINISH } from '../constants';
+import { SUBMIT_IMAGE_PENDING, SUBMIT_IMAGE_FINISH, SUBMIT_IMAGE_DISMISS } from '../constants';
 import { FileHandler } from '../utils/utilities';
 import { getToken } from '../api/login';
 const Guid = require('guid');
@@ -10,6 +10,13 @@ export function submitImage() {
     type: SUBMIT_IMAGE_PENDING,
   };
 }
+
+export function imageFinishDismiss() {
+  return {
+    type: SUBMIT_IMAGE_DISMISS,
+  };
+}
+
 export function submitImageFinish(wasSuccess, errorMessage) {
   return {
     type: SUBMIT_IMAGE_FINISH,

@@ -26,7 +26,7 @@ store.subscribe(() => {
     currentUser !== null &&
     currentPath === '/login'
   ) {
-    console.log('Trigerred login move');
+    console.log('Triggered login move');
     history.pushState(null, '/addImage');
   } else if (
     currentUser !== null ||

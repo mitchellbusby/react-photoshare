@@ -10,8 +10,9 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import { selectImageAsync } from '../actions/previewimage';
 import DatePicker from 'material-ui/lib/date-picker/date-picker';
-import { submitImageAsync } from '../actions/addImage';
+import { submitImageAsync, imageFinishDismiss } from '../actions/addImage';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import Snackbar from 'material-ui/lib/snackbar';
 import { saveToken } from '../actions/guest';
 
 function mapStateToProps(state) {
@@ -19,6 +20,7 @@ function mapStateToProps(state) {
     imageForm: state.form[ADD_IMAGE_FORM],
     imageData: state.previewImage.imageData,
     token: state.guest.get('token'),
+    addImageStatus: state.addImageStatus,
   };
 }
 
@@ -32,6 +34,9 @@ function mapDispatchToProps(dispatch) {
     },
     saveAuthenticatedToken: (tokenToSave) => {
       dispatch(saveToken(tokenToSave));
+    },
+    dismissImageSuccessful: () => {
+      dispatch(imageFinishDismiss());
     },
   };
 }
@@ -47,6 +52,8 @@ class ImageForm extends Component {
     submit: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
     saveAuthenticatedToken: PropTypes.func.isRequired,
+    addImageStatus: PropTypes.object.isRequired,
+    dismissImageSuccessful: PropTypes.func.isRequired,
   }
   constructor() {
     super();
@@ -66,7 +73,7 @@ class ImageForm extends Component {
     }
   }
   render() {
-    const { fields, submit, selectImage, handleSubmit } = this.props;
+    const { fields, submit, selectImage, handleSubmit, addImageStatus } = this.props;
     return (
       <div>
         <AppBar
@@ -125,12 +132,20 @@ class ImageForm extends Component {
             {this.renderImagePreview()}
             <RaisedButton onClick={ handleSubmit(submit) } label={'Submit'}
             style={{'margin': '1em', 'marginLeft': '0'}}
+            disabled={ addImageStatus.isSubmitting }
             primary/>
+            <Snackbar
+              open={ addImageStatus.submitted && addImageStatus.wasSuccessful }
+              message={ `Image successfully uploaded` }
+              onRequestClose={ () => this.dismissImageSuccessful() } />
           </form>
         </Card>
         <ErrorSnackbar />
       </div>
     );
+  }
+  dismissImageSuccessful() {
+    this.props.dismissImageSuccessful();
   }
 }
 
