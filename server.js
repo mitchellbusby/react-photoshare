@@ -81,6 +81,7 @@ app.post('/api/submitImage', function(req, res) {
     var bucketName = s3.config.awsBucket;
     var photoName = req.body.name+'.jpg';
     var photoUri = 'https://'+s3.config.awsRegion+'.amazonaws.com/'+bucketName+'/'+photoName;
+    var guid = guid.raw();
     s3.uploadPhotoByStream(req.body.imageData, client, bucketName, photoName, function(err, data) {
       // then export to mongo durr
       if (err) {return res.status(501).send(err);}
@@ -90,11 +91,11 @@ app.post('/api/submitImage', function(req, res) {
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         likelog: [],
-        id: guid.raw(),
+        id: guid,
         date: req.body.date,
       }, function(err, data) {
         if (err) {return res.status(501).send(err);}
-        res.json({'Response':'Success'});
+        res.json({'Response':'Success', 'PhotoGuid': guid});
       });
     });
   });
