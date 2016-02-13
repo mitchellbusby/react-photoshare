@@ -28,6 +28,14 @@ export function fetchReceived(json) {
   };
 }
 
+export function fetchFailed(err) {
+  return {
+    type: RECEIVE_IMAGES,
+    images: [],
+    error: err,
+  };
+}
+
 export function fetchImagesThunk() {
   return function onDispatch(dispatch) {
     dispatch(fetchImages());
@@ -36,7 +44,8 @@ export function fetchImagesThunk() {
     .then(response=>response.json())
     .then(json=>
       dispatch(fetchReceived(json))
-    );
+    )
+    .catch(err => dispatch(fetchFailed(err)));
   };
 }
 

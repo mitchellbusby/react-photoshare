@@ -5,6 +5,7 @@ import Radium from 'radium';
 import AppBar from 'material-ui/lib/app-bar';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 import ImageCard from '../components/ImageCard';
 import { saveToken } from '../actions/guest';
 
@@ -62,6 +63,7 @@ class ImagesPage extends Component {
         {images.map(image =>
           <ImageCard key={image.id} image={image}/>
         )}
+        <ErrorSnackbar />
       </div>
 
     );

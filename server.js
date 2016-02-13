@@ -47,7 +47,7 @@ app.post('/api/login', function(req, res) {
 
 app.get('/api/allimages', function(req, res) {
   mongo.getAllImages(function(err, data) {
-    if (err) {res.json(err);}
+    if (err) {res.status(501).json(err);}
     else {
       res.json(data);
     }

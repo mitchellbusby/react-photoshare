@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { FAVE_IMAGE, UNFAVE_IMAGE, RECEIVE_IMAGES } from '../constants';
-
+const Guid = require('Guid');
 
 const imagesReducer = handleActions({
   [FAVE_IMAGE]: (state, action) => (
@@ -28,9 +28,8 @@ const imagesReducer = handleActions({
   ),
 }, [{
   url: 'https://s3-us-west-2.amazonaws.com/busby-traveller/photo.jpg',
-  id: 0,
+  id: Guid.raw(),
   location: 'Paris, France',
-  likes: 1,
   likelog: [],
 }]);
 
