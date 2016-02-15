@@ -13,6 +13,7 @@ function mapStateToProps(state) {
   return {
     images: state.images,
     guestData: state.guest,
+    imagesGallery: state.imagesGalleryStatus,
   };
 }
 
@@ -39,6 +40,7 @@ class ImagesPage extends Component {
     fetchImages: PropTypes.func.isRequired,
     saveGuestToken: PropTypes.func.isRequired,
     guestData: PropTypes.object.isRequired,
+    imagesGallery: PropTypes.object.isRequired,
   }
   componentDidMount() {
     const { fetchImages, saveGuestToken, guestData } = this.props;
@@ -48,7 +50,7 @@ class ImagesPage extends Component {
     }
   }
   render() {
-    const { images } = this.props;
+    const { images, imagesGallery } = this.props;
     return (
       <div>
         <AppBar
@@ -63,6 +65,11 @@ class ImagesPage extends Component {
         {images.map(image =>
           <ImageCard key={image.id} image={image}/>
         )}
+        {
+          imagesGallery.loading ?
+          <p>Loading!</p>
+          : null
+        }
         <ErrorSnackbar />
       </div>
 

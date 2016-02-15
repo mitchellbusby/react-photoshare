@@ -1,6 +1,8 @@
 // mongodb
 var MongoClient = require('mongodb').MongoClient;
-var DB_URI = require('./export/config').mongoUri;
+var DB_URI = require('./export/config').mongoConnectionString;
+var DB_USERNAME = require('./export/config').mongoUsername;
+var DB_PASSWORD = require('./export/config').mongoPassword;
 
 var client = function(DB_URI, callback) {
 	MongoClient.connect(DB_URI, callback);
@@ -8,9 +10,11 @@ var client = function(DB_URI, callback) {
 
 var getAllImages = function(callback) {
 	client(DB_URI, function(err, db) {
-		if (err || db==null) {
-			callback("Error in connecting to database");
+		if (err || db===null) {
+			console.log("uh oh");
+			return callback("Error in connecting to database: "+err);
 		}
+		//console.log(db);
 		var cur = db.collection('images').find({});
 		cur.toArray(function(err, collection) {
 			console.log(collection);

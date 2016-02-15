@@ -1,6 +1,6 @@
 import { FAVE_IMAGE, UNFAVE_IMAGE, FETCH_IMAGES, RECEIVE_IMAGES } from '../constants';
 import fetch from 'isomorphic-fetch';
-
+import { HandleFetchErrors } from '../utils/utilities';
 
 export function fave(id, guestToken) {
   return {
@@ -22,6 +22,7 @@ export function fetchImages() {
   };
 }
 export function fetchReceived(json) {
+  console.log(json);
   return {
     type: RECEIVE_IMAGES,
     images: json,
@@ -32,7 +33,7 @@ export function fetchFailed(err) {
   return {
     type: RECEIVE_IMAGES,
     images: [],
-    error: err,
+    error: err.message,
   };
 }
 
@@ -41,11 +42,14 @@ export function fetchImagesThunk() {
     dispatch(fetchImages());
 
     return fetch(`/api/allimages`)
+    .then(HandleFetchErrors)
     .then(response=>response.json())
-    .then(json=>
-      dispatch(fetchReceived(json))
-    )
-    .catch(err => dispatch(fetchFailed(err)));
+    .then(json=>{
+      dispatch(fetchReceived(json));
+    })
+    .catch((err) => {
+      dispatch(fetchFailed(err));
+    });
   };
 }
 

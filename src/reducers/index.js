@@ -8,6 +8,7 @@ import previewImage from './previewImage';
 import guest from './guest';
 import errorReducer from './errormessage';
 import addImageReducer from './addimage';
+import imagesGalleryReducer from './imagesgallery';
 
 const rootReducer = combineReducers({
   user,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   guest: guest,
   error: errorReducer,
   addImageStatus: addImageReducer,
+  imagesGalleryStatus: imagesGalleryReducer,
 });
 
 export default rootReducer;

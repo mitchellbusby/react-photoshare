@@ -46,3 +46,18 @@ export function FileHandler(fileObject) {
     };
   });
 }
+
+/**
+  * Throws an error on fetch statuses that are considered errors
+  * @param {Response} the response provided by Isomorphic Fetch
+  * @return {string} the response code
+  * @throws {Error} an error if the response statuscode is a non-success.
+  */
+export function HandleFetchErrors(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+  const error = new Error(response.statusText);
+  error.response = response;
+  throw error;
+}
