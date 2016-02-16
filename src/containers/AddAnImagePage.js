@@ -10,7 +10,7 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import { selectImageAsync } from '../actions/previewimage';
 import DatePicker from 'material-ui/lib/date-picker/date-picker';
-import { submitImageAsync, imageFinishDismiss } from '../actions/addImage';
+import { submitImageAsync, imageFinishDismiss } from '../actions/addimage';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import Snackbar from 'material-ui/lib/snackbar';
 import { saveToken } from '../actions/guest';

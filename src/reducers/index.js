@@ -4,7 +4,7 @@ import { reducer as formReducer } from 'redux-form';
 import counter from './counter';
 import user from './user';
 import images from './images';
-import previewImage from './previewImage';
+import previewImage from './previewimage';
 import guest from './guest';
 import errorReducer from './errormessage';
 import addImageReducer from './addimage';
