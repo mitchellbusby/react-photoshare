@@ -28,7 +28,7 @@ function uploadPhoto(photoUri, client, bucketName, key, callback) {
 function uploadPhotoByStream(binaryImage, client, bucketName, key, callback) {
 	// Key is the uri where the picture will go
 	// thx http://stackoverflow.com/a/26111627
-	buf = new Buffer(binaryImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
+	var buf = new Buffer(binaryImage.replace(/^data:image\/\w+;base64,/, ""),'base64');
 	console.log("Uploading file to bucket "+bucketName+"!");
 	client.putObject({
 		Bucket: bucketName,
