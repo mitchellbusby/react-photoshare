@@ -87,11 +87,15 @@ var validateUserWithToken = function(guestToken, callback) {
 		if (err) {return callback(err);}
 		var cur = db.collection('users').find({tokens: {$elemMatch:{$eq:guestToken}}});
 		cur.toArray(function(err, userMatches){
+			if (err) {
+				return callback(false);
+			}
+			console.log(userMatches);
 			if (userMatches.length > 0) {
-				callback(true);
+				return callback(true);
 			}
 			else {
-				callback(false);
+				return callback(false);
 			}
 		});
 	});

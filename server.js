@@ -9,7 +9,7 @@ const ADDRESS = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
 const s3 = require('./export/s3_exporter');
 const config = require('./webpack.config');
 const compiler = webpack(config);
-const guid = require('guid');
+const Guid = require('guid');
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-dev-middleware')(compiler, {
@@ -81,7 +81,7 @@ app.post('/api/submitImage', function(req, res) {
     var bucketName = s3.config.awsBucket;
     var photoName = req.body.name+'.jpg';
     var photoUri = 'https://'+s3.config.awsRegion+'.amazonaws.com/'+bucketName+'/'+photoName;
-    var guid = guid.raw();
+    var guid = Guid.raw();
     s3.uploadPhotoByStream(req.body.imageData, client, bucketName, photoName, function(err, data) {
       // then export to mongo durr
       if (err) {return res.status(501).send(err);}

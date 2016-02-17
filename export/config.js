@@ -8,5 +8,3 @@ exports.awsRegion = process.env.AWS_REGION;
 exports.photosToUploadFolder = "";
 
 exports.mongoConnectionString = process.env.MONGO_CONNECTION_STRING;
-
-console.log(exports);
